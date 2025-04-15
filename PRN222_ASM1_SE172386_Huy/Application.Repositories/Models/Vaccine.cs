@@ -9,7 +9,7 @@ namespace Application.Repositories.Models;
 public partial class Vaccine
 {
     [Key]
-    public int VaccineId { get; set; }
+    public Guid VaccineId { get; set; }
 
     [StringLength(200)]
     [Unicode(false)]
