@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Application.Repositories.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Repositories.Context;
 
