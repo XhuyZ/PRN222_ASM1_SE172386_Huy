@@ -4,14 +4,14 @@ namespace Application.Repositories.Basic
 {
     public class GenericRepository<T> where T : class
     {
-        protected MyDbContext _context;
+        protected AppDbContext _context;
 
         public GenericRepository()
         {
-            _context ??= new MyDbContext();
+            _context ??= new AppDbContext();
         }
 
-        public GenericRepository(MyDbContext context)
+        public GenericRepository(AppDbContext context)
         {
             _context = context;
         }

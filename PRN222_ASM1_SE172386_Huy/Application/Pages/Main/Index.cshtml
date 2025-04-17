@@ -1,0 +1,66 @@
+@page
+@model Application.Pages.Main.IndexModel
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].PackageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].EffectiveFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].EffectiveTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccinePackage[0].CreatedByUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.VaccinePackage) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EffectiveFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EffectiveTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedByUser.Email)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PackageID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.PackageID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.PackageID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

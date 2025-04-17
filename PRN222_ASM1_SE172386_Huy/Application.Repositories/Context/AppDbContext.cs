@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using Application.Repositories.Models;
+using Application.Repositories.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Repositories.Context;
 
-public partial class MyDbContext : DbContext
+public partial class AppDbContext : DbContext
 {
-    public MyDbContext()
+    public AppDbContext()
     {
     }
 
-    public MyDbContext(DbContextOptions<MyDbContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
 
-    public virtual DbSet<System_UserAccount> System_UserAccounts { get; set; }
+    public virtual DbSet<System_UserAccount?> System_UserAccounts { get; set; }
 
     public virtual DbSet<Vaccine> Vaccines { get; set; }
 
@@ -40,29 +40,22 @@ public partial class MyDbContext : DbContext
         => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Vaccine>(entity =>
-        {
-            entity.HasKey(e => e.VaccineId).HasName("PK__Vaccines__45DC6889121D0127");
-
-            entity.Property(e => e.VaccineId).ValueGeneratedNever();
-        });
-
         modelBuilder.Entity<VaccinePackage>(entity =>
         {
-            entity.HasKey(e => e.VaccinePackageID).HasName("PK__VaccineP__BEA96C823A1F8BBE");
-
-            entity.Property(e => e.VaccinePackageID).ValueGeneratedNever();
+            entity.HasOne(d => d.CreatedByUser).WithMany(p => p.VaccinePackages)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VaccinePackage_UserAccount");
         });
 
         modelBuilder.Entity<VaccinePackageDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__VaccineP__3214EC07FE918F11");
+            entity.HasOne(d => d.Package).WithMany(p => p.VaccinePackageDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VaccinePackageDetail_Package");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
-
-            entity.HasOne(d => d.Vaccine).WithMany(p => p.VaccinePackageDetails).HasConstraintName("FK__VaccinePa__Vacci__60A75C0F");
-
-            entity.HasOne(d => d.VaccinePackage).WithMany(p => p.VaccinePackageDetails).HasConstraintName("FK__VaccinePa__Vacci__619B8048");
+            entity.HasOne(d => d.Vaccine).WithMany(p => p.VaccinePackageDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VaccinePackageDetail_Vaccine");
         });
 
         OnModelCreatingPartial(modelBuilder);

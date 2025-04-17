@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Repositories.Models;
+namespace Application.Repositories.Entities;
 
 [Table("System.UserAccount")]
 public partial class System_UserAccount
@@ -51,4 +51,7 @@ public partial class System_UserAccount
     public string? ModifiedBy { get; set; }
 
     public bool IsActive { get; set; }
+
+    [InverseProperty("CreatedByUser")]
+    public virtual ICollection<VaccinePackage> VaccinePackages { get; set; } = new List<VaccinePackage>();
 }
